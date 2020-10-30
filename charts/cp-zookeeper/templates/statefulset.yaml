@@ -51,9 +51,8 @@ spec:
         image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
         command:
         - java
-        - -XX:+UnlockExperimentalVMOptions
-        - -XX:+UseCGroupMemoryLimitForHeap
-        - -XX:MaxRAMFraction=1
+        - -XX:MaxRAMPercentage=80.0
+        - -XX:InitialRAMPercentage=20.0
         - -XshowSettings:vm
         - -jar
         - jmx_prometheus_httpserver.jar
