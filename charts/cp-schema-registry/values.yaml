@@ -54,6 +54,20 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## Liveness and readiness
+livenessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 30
+  successThreshold: 1
+  timeoutSeconds: 1
+readinessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  successThreshold: 1
+  timeoutSeconds: 1
+
 ## Custom pod annotations
 podAnnotations: {}
 
