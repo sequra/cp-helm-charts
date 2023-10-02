@@ -18,6 +18,8 @@ imagePullPolicy: IfNotPresent
 ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 imagePullSecrets:
 
+serviceAccount: {}
+
 servicePort: 8083
 
 ## Kafka Connect properties
