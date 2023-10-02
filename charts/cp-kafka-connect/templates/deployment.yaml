@@ -29,6 +29,13 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccount.name  }}
+      serviceAccount: {{ .Values.serviceAccount.name }}
+      {{- else  }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccount: {{ .Release.Name }}-cp-kafka-connect
+      {{- end }}
+      {{- end  }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
