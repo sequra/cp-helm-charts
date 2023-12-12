@@ -118,6 +118,7 @@ prometheus:
       enabled: false
       namespace: kube-system
       interval: 30s
+      relabelings: []
 
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.

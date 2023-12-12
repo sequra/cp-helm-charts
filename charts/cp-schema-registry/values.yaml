@@ -101,5 +101,5 @@ prometheus:
       enabled: false
       namespace: kube-system
       interval: 30s
-
+      relabelings: []
     resources: {}
