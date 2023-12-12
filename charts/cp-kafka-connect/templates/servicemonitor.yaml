@@ -23,6 +23,10 @@ spec:
   endpoints:
     - port: metrics
       interval: {{ .Values.prometheus.jmx.serviceMonitor.interval }}
+{{- if .Values.prometheus.jmx.serviceMonitor.relabelings }}
+      relabelings:
+{{ toYaml .Values.prometheus.jmx.serviceMonitor.relabelings | indent 6 }}
+{{- end }}
   targetLabels:
     - release
 {{- end }}

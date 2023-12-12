@@ -94,6 +94,9 @@ resources: {}
 ## Custom pod annotations
 podAnnotations: {}
 
+## Custom service metrics annotations
+serviceAnnotations: {}
+
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
 nodeSelector: {}
@@ -124,6 +127,7 @@ prometheus:
       enabled: false
       namespace: kube-system
       interval: 30s
+      relabelings: {}
 
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.
