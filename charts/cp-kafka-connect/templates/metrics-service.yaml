@@ -10,6 +10,12 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: metrics
+{{- if .Values.serviceAnnotations }}
+  annotations:
+  {{- range $key, $value := .Values.serviceAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
 spec:
   ports:
     - port: {{ .Values.prometheus.jmx.port }}

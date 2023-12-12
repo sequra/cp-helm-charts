@@ -26,7 +26,7 @@ spec:
 {{- if .Values.prometheus.jmx.serviceMonitor.relabelings }}
       relabelings:
 {{ toYaml .Values.prometheus.jmx.serviceMonitor.relabelings | indent 6 }}
-{{- end -}}
+{{- end }}
   targetLabels:
     - release
 {{- end }}
