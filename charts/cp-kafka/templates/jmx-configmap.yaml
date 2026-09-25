@@ -24,6 +24,9 @@ data:
     - kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent
     - kafka.controller:type=ControllerStats,name=*
     - kafka.server:type=SessionExpireListener,name=*
+    - java.lang:type=Memory
+    - java.lang:type=MemoryPool,name=*
+    - java.lang:type=GarbageCollector,name=*
     rules:
     - pattern : kafka.server<type=ReplicaManager, name=(.+)><>(Value|OneMinuteRate)
       name: "cp_kafka_server_replicamanager_$1"
@@ -43,4 +46,31 @@ data:
       name: "cp_kafka_controller_controllerstats_$1"
     - pattern : kafka.server<type=SessionExpireListener, name=(.+)><>OneMinuteRate
       name: "cp_kafka_server_sessionexpirelistener_$1"
+    # JVM memory and GC of the broker. The pool rules report each G1 region (Eden, Survivor,
+    # Old Gen). The old generation's used bytes drop after each mixed collection, so its minimum
+    # over a window is the closest figure to the broker's live heap. The pools' CollectionUsage
+    # is not exported: on Java 8, G1 only updates it on a full GC, so for the old generation it
+    # stays at 0 on a healthy broker.
+    - pattern : java.lang<type=Memory><HeapMemoryUsage>(used|committed|max)
+      name: "cp_kafka_jvm_memory_bytes_$1"
+      labels:
+        area: heap
+    - pattern : java.lang<type=Memory><NonHeapMemoryUsage>(used|committed|max)
+      name: "cp_kafka_jvm_memory_bytes_$1"
+      labels:
+        area: nonheap
+    - pattern : java.lang<type=MemoryPool, name=(.+)><Usage>(used|committed|max)
+      name: "cp_kafka_jvm_memory_pool_bytes_$2"
+      labels:
+        pool: "$1"
+    - pattern : java.lang<type=GarbageCollector, name=(.+)><>CollectionCount
+      name: "cp_kafka_jvm_gc_collections_total"
+      type: COUNTER
+      labels:
+        gc: "$1"
+    - pattern : java.lang<type=GarbageCollector, name=(.+)><>CollectionTime
+      name: "cp_kafka_jvm_gc_collection_time_milliseconds_total"
+      type: COUNTER
+      labels:
+        gc: "$1"
 {{- end }}
