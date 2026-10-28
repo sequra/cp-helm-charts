@@ -35,6 +35,18 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app"
+                  operator: In
+                  values:
+                  - cp-kafka
+                - key: "release"
+                  operator: In
+                  values:
+                  - {{ .Release.Name }}
+            topologyKey: "kubernetes.io/hostname"
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 1
             podAffinityTerm:
