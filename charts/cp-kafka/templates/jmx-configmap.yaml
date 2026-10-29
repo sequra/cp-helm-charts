@@ -18,7 +18,7 @@ data:
     - kafka.server:type=ReplicaManager,name=*
     - kafka.controller:type=KafkaController,name=*
     - kafka.server:type=BrokerTopicMetrics,name=*
-    - kafka.network:type=RequestMetrics,name=RequestsPerSec,request=*
+    - kafka.network:type=RequestMetrics,name=RequestsPerSec,*
     - kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent
     - kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=*
     - kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent
@@ -34,8 +34,10 @@ data:
       name: "cp_kafka_controller_kafkacontroller_$1"
     - pattern : kafka.server<type=BrokerTopicMetrics, name=(.+)><>OneMinuteRate
       name: "cp_kafka_server_brokertopicmetrics_$1"
-    - pattern : kafka.network<type=RequestMetrics, name=RequestsPerSec, request=(.+)><>OneMinuteRate
+    - pattern : kafka.network<type=RequestMetrics, name=RequestsPerSec, request=(.+), version=(.+)><>OneMinuteRate
       name: "cp_kafka_network_requestmetrics_requestspersec_$1"
+      labels:
+        version: "$2"
     - pattern : kafka.network<type=SocketServer, name=NetworkProcessorAvgIdlePercent><>Value
       name: "cp_kafka_network_socketserver_networkprocessoravgidlepercent"
     - pattern : kafka.server<type=ReplicaFetcherManager, name=MaxLag, clientId=(.+)><>Value
